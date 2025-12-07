@@ -1,0 +1,46 @@
+name: raonson
+description: Instagram-style social app with AI chat and KingAI builder
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.9.0
+  cloud_firestore: ^4.8.4
+  firebase_storage: ^11.2.4
+  firebase_messaging: ^14.7.4
+  firebase_app_check: ^0.1.5
+  google_sign_in: ^6.1.5
+  image_picker: ^1.0.4
+  video_player: ^2.8.2
+  chewie: ^1.7.0
+  permission_handler: ^11.1.0
+  intl: ^0.18.1
+  provider: ^6.0.5
+  flutter_riverpod: ^2.4.3
+  http: ^1.1.0
+  flutter_svg: ^2.0.9
+  lottie: ^2.7.0
+  uuid: ^4.3.3
+  shared_preferences: ^2.2.2
+  in_app_purchase: ^3.1.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/lottie/
+    - assets/video/
