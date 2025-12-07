@@ -1,0 +1,71 @@
+import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool isVerified = false;
+  final InAppPurchase _iap = InAppPurchase.instance;
+  List<ProductDetails> _products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+    _iap.purchaseStream.listen(_listenToPurchaseUpdated);
+  }
+
+  void _loadProducts() async {
+    const Set<String> _kIds = {'verified_badge'};
+    final ProductDetailsResponse response = await _iap.queryProductDetails(_kIds);
+    if (response.notFoundIDs.isEmpty) {
+      setState(() {
+        _products = response.productDetails;
+      });
+    }
+  }
+
+  void _buyProduct(ProductDetails product) {
+    final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
+    _iap.buyConsumable(purchaseParam: purchaseParam);
+  }
+
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchases) {
+    for (var purchase in purchases) {
+      if (purchase.status == PurchaseStatus.purchased) {
+        setState(() {
+          isVerified = true;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Profile")),
+      body: Column(
+        children: [
+          Row(
+            children: [
+              Text("User Name", style: TextStyle(color: Colors.white, fontSize: 22)),
+              if (isVerified)
+                Icon(Icons.check_circle, color: Colors.green),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_products.isNotEmpty) {
+                _buyProduct(_products.first);
+              }
+            },
+            child: Text("Get Verified Badge"),
+          ),
+        ],
+      ),
+    );
+  }
+}
